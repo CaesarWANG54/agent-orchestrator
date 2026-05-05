@@ -1,0 +1,65 @@
+{
+  "routing_policy": {
+    "planner_roles": [
+      "planning",
+      "architecture",
+      "requirements"
+    ],
+    "builder_roles": [
+      "coding",
+      "testing",
+      "documentation"
+    ],
+    "reviewer_roles": [
+      "review",
+      "qa",
+      "security",
+      "performance"
+    ],
+    "fallback_lanes": [
+      {
+        "name": "local-fast-fallback",
+        "when": "cheap_repetitive_or_remote_timeout",
+        "workers": [
+          "ollama_planner",
+          "ollama_reviewer"
+        ]
+      },
+      {
+        "name": "remote-review-fallback",
+        "when": "builder_failed_or_needs_final_judgement",
+        "workers": [
+          "codex_auditor",
+          "claude_strategist"
+        ]
+      }
+    ],
+    "budget_modes": {
+      "cheap": {
+        "prefer_local": true,
+        "max_remote_hops": 1,
+        "notes": "Keep simple repetitive work local and escalate only when quality or write access demands it."
+      },
+      "balanced": {
+        "prefer_local": false,
+        "max_remote_hops": 2,
+        "notes": "Use the best planner, specialized builders, and a strong final reviewer."
+      },
+      "premium": {
+        "prefer_local": false,
+        "max_remote_hops": 3,
+        "notes": "Favor the highest-quality planner and reviewer lanes on risky work."
+      }
+    },
+    "quick_ping_strategy": [
+      "Prefer local config, auth, or cached state before a heavy CLI status call.",
+      "Hide console windows and keep probes short.",
+      "Cache quick ping results for repeated checks."
+    ],
+    "deep_ping_strategy": [
+      "Send a compact deterministic request that proves a real roundtrip.",
+      "Capture framework label, target model or agent, and visible assistant text.",
+      "Return the permission posture used for the probe."
+    ]
+  }
+}

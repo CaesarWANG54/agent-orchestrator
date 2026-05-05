@@ -1,0 +1,150 @@
+{
+  "workers": [
+    {
+      "worker_id": "hermes_designer",
+      "worker_type": "openclaw_agent",
+      "display_name": "Hermes Designer",
+      "role": "Architecture and planning specialist.",
+      "capabilities": ["planning", "design", "requirements", "architecture", "review"],
+      "cost_tier": 3,
+      "quality_tier": 5,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": false,
+      "platform": {
+        "framework_label": "Hermes",
+        "backend_label": "OpenClaw Agent",
+        "target_label": "hermes-wingman @ openai-codex/gpt-5.4",
+        "mode_family": "agent_cli"
+      },
+      "config": {
+        "agent": "hermes-wingman",
+        "expected_model": "openai-codex/gpt-5.4"
+      }
+    },
+    {
+      "worker_id": "openclaw_coder",
+      "worker_type": "openclaw_agent",
+      "display_name": "OpenClaw Coder",
+      "role": "Write-capable implementation lane.",
+      "capabilities": ["coding", "testing", "review"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": true,
+      "platform": {
+        "framework_label": "OpenClaw",
+        "backend_label": "OpenClaw Agent",
+        "target_label": "main @ openai-codex/gpt-5.4",
+        "mode_family": "agent_cli"
+      },
+      "config": {
+        "agent": "main",
+        "expected_model": "openai-codex/gpt-5.4"
+      }
+    },
+    {
+      "worker_id": "ollama_planner",
+      "worker_type": "ollama_api",
+      "display_name": "Ollama Planner",
+      "role": "Cheap local planning lane.",
+      "capabilities": ["planning", "triage", "summarization"],
+      "cost_tier": 1,
+      "quality_tier": 2,
+      "speed_tier": 5,
+      "local_only": true,
+      "api_cost": false,
+      "supports_workspace_write": false,
+      "platform": {
+        "framework_label": "Ollama",
+        "backend_label": "Ollama API",
+        "target_label": "qwen3.5:9b",
+        "mode_family": "local_llm"
+      },
+      "config": {
+        "model": "qwen3.5:9b"
+      }
+    },
+    {
+      "worker_id": "claude_strategist",
+      "worker_type": "claude_cli",
+      "display_name": "Claude Strategist",
+      "role": "High-quality strategy and review lane.",
+      "capabilities": ["planning", "design", "review", "architecture"],
+      "cost_tier": 4,
+      "quality_tier": 4,
+      "speed_tier": 2,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": false,
+      "platform": {
+        "framework_label": "Claude",
+        "backend_label": "Claude Code CLI",
+        "target_label": "deepseek-v4-pro[1m]",
+        "mode_family": "agent_cli"
+      },
+      "config": {
+        "model": "deepseek-v4-pro[1m]"
+      }
+    },
+    {
+      "worker_id": "codex_auditor",
+      "worker_type": "codex_cli",
+      "display_name": "Codex Auditor",
+      "role": "Final acceptance and safety gate.",
+      "capabilities": ["review", "qa", "testing", "security"],
+      "cost_tier": 4,
+      "quality_tier": 5,
+      "speed_tier": 1,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": false,
+      "platform": {
+        "framework_label": "Codex",
+        "backend_label": "Codex CLI",
+        "target_label": "gpt-5.4",
+        "mode_family": "agent_cli"
+      },
+      "config": {
+        "model": "gpt-5.4"
+      }
+    },
+    {
+      "worker_id": "goose_planner",
+      "worker_type": "external_cli_agent",
+      "display_name": "Goose Planner",
+      "role": "Example future external planner lane.",
+      "capabilities": ["planning", "design"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": false,
+      "platform": {
+        "framework_label": "Goose",
+        "backend_label": "Goose CLI",
+        "target_label": "goose/default",
+        "mode_family": "agent_cli",
+        "security_label": "CLI controlled",
+        "security_detail": "Permissions depend on Goose CLI configuration."
+      },
+      "config": {
+        "binary": "goose",
+        "invoke_command": ["goose", "run", "--json", "--mode", "{mode}"],
+        "health_command": ["goose", "--version"],
+        "quick_ping_command": ["goose", "status", "--json"],
+        "response_parser": "json_field",
+        "response_text_field": "result",
+        "prompt_transport": "stdin",
+        "timeout": 300,
+        "quick_timeout": 20,
+        "deep_timeout": 90
+      }
+    }
+  ]
+}
+
